@@ -7,8 +7,6 @@ import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.concurrent.Executor;
-
 import static com.mongodb.client.model.Sorts.descending;
 
 public class ExpenseRepository {

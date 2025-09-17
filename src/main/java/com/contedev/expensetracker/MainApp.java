@@ -14,7 +14,7 @@ public class MainApp extends Application
 {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/resources/com/contedev/expensetracker/ExpenseView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/contedev/expensetracker/ExpenseView.fxml"));
 
         Parent root = loader.load();
         stage.setScene(new Scene(root));

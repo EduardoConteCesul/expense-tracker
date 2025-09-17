@@ -1,6 +1,7 @@
 package com.contedev.expensetracker.view;
 
 import com.contedev.expensetracker.model.Expense;
+import com.contedev.expensetracker.view_model.ExpenseViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,16 +29,19 @@ public class ExpenseView {
     @FXML private Button deleteButton;
     @FXML private Label totalLabel;
 
+    private final ExpenseViewModel vm = new ExpenseViewModel();
+
     // Metodo chamado automaticamento pelo FXMLLoader
     @FXML
     private void initialize(){
 
-        description.textProperty().bindBidirectional();
+        
+        description.textProperty().bindBidirectional(vm.descriptionProperty());
 
         TextFormatter<Number> amountFormatter = new TextFormatter<>(new NumberStringConverter());
         amountField.setTextFormatter(amountFormatter);
         // Fazer um binding bidirecional entre o NumberProperty(VM) e o valueProperty(formatter)
-        Bindings.bindBidirectional();
+        Bindings.bindBidirectional(vm.amountProperty(), amountFormatter.valueProperty());
 
         // Dizer qual getter do expense abastece cada coluna
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -45,11 +49,15 @@ public class ExpenseView {
         amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
         // Popular os dados
-        expenseTable.setItems();
+        expenseTable.setItems(vm.getExpenses());
 
-        totalLabel.textProperty().bind();
+        totalLabel.textProperty().bind(vm.totalProperty().asString("Total: R$ %.2f"));
 
-        addButton.setOnAction();
-        deleteButton.setOnAction();
+        addButton.setOnAction(expenseTable -> vm.addExpense());
+        deleteButton.setOnAction(expense -> vm.deleteSelected(
+                expenseTable.getSelectionModel().getSelectedItem()
+        ));
+
+
     }
 }
